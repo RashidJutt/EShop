@@ -20,7 +20,7 @@ public class EncryptedCache : IEncryptedCache
     }
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken) where T : class
     {
-        var encryptedValue = await _distributedCache.GetStringAsync(key, cancellationToken);
+        var encryptedValue = await _distributedCache.GetStringAsync(GetKey(key), cancellationToken);
         if (string.IsNullOrEmpty(encryptedValue))
         {
             return null;
@@ -34,11 +34,16 @@ public class EncryptedCache : IEncryptedCache
     {
         var serializedValue = JsonSerializer.Serialize(value);
         var encryptedValue = _encryptionService.Encrypt(serializedValue);
-        await _distributedCache.SetStringAsync(key, encryptedValue, cancellationToken);
+        await _distributedCache.SetStringAsync(GetKey(key), encryptedValue, cancellationToken);
     }
 
     public async Task DeleteAsync(string key, CancellationToken cancellationToken)
     {
-        await _distributedCache.RemoveAsync(key, cancellationToken);
+        await _distributedCache.RemoveAsync(GetKey(key), cancellationToken);
+    }
+
+    private string GetKey(string key)
+    {
+        return $"Basket:{key}";
     }
 }

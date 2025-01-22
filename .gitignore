@@ -18,3 +18,11 @@
 /Services/Basket/Basket.Core/obj/*
 /Services/Basket/Basket.Infrastructure/bin/*
 /Services/Basket/Basket.Infrastructure/obj/*
+/Services/Discount/Discount.API/bin/*
+/Services/Discount/Discount.API/obj/*
+/Services/Discount/Discount.Application/bin/*
+/Services/Discount/Discount.Application/obj/*
+/Services/Discount/Discount.Core/bin/*
+/Services/Discount/Discount.Core/obj/*
+/Services/Discount/Discount.Infrastructure/bin/*
+/Services/Discount/Discount.Infrastructure/obj/*

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Basket.Application.Clients;
 using Basket.Application.Dtos;
 using Basket.Core.Entities;
 using Basket.Core.Repositories;
@@ -12,19 +13,44 @@ public class UpdateShoppingCartCommandHandler : IRequestHandler<UpdateShoppingCa
     private readonly IBasketRepository _basketRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UpdateShoppingCartCommandHandler> _logger;
+    private readonly IDiscountServiceClient _discountServiceClient;
 
-    public UpdateShoppingCartCommandHandler(IBasketRepository basketRepository, IMapper mapper, ILogger<UpdateShoppingCartCommandHandler> logger)
+    public UpdateShoppingCartCommandHandler(
+        IBasketRepository basketRepository,
+        IMapper mapper,
+        ILogger<UpdateShoppingCartCommandHandler> logger,
+        IDiscountServiceClient discountServiceClient)
     {
-        _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _basketRepository = basketRepository;
+        _mapper = mapper;
+        _logger = logger;
+        _discountServiceClient = discountServiceClient;
     }
+
     public async Task<ShoppingCartDto> Handle(UpdateShoppingCartCommand request, CancellationToken cancellationToken)
     {
-        var shoppingCart = _mapper.Map<ShoppingCart>(request.ShoppingCart);
-        var updatedShoppingCart = await _basketRepository.UpdateAsync(shoppingCart, cancellationToken);
+        await ApplyDiscountAsync(request.ShoppingCart, cancellationToken);
 
-        _logger.LogInformation("Successfully updated shopping cart for UserName: {UserName}", request.ShoppingCart.UserName);
+        var shoppingCartEntity = _mapper.Map<ShoppingCart>(request.ShoppingCart);
+        var updatedShoppingCart = await _basketRepository.UpdateAsync(shoppingCartEntity, cancellationToken);
+
+        _logger.LogInformation("Shopping cart updated for UserName: {UserName}", request.ShoppingCart.UserName);
+
         return _mapper.Map<ShoppingCartDto>(updatedShoppingCart);
+    }
+
+    private async Task ApplyDiscountAsync(ShoppingCartDto shoppingCart, CancellationToken cancellationToken)
+    {
+        foreach (var item in shoppingCart.Items)
+        {
+            var discount = await _discountServiceClient.GetCoupon(item.ProductName);
+
+            if (discount?.Amount > 0)
+            {
+                item.Price -= discount.Amount;
+                _logger.LogInformation("Applied discount of {Amount} to item {ProductName} for UserName: {UserName}",
+                    discount.Amount, item.ProductName, shoppingCart.UserName);
+            }
+        }
     }
 }

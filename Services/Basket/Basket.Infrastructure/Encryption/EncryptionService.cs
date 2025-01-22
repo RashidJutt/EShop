@@ -2,7 +2,7 @@
 
 public class EncryptionService : IEncryptionService
 {
-    private readonly byte[] key = System.Text.Encoding.UTF8.GetBytes("ASD-ASDF-GAALLLE-NNVAZZNEES-ADSLLE");
+    private readonly byte[] key = System.Text.Encoding.UTF8.GetBytes("ASD-ASDF-GAALLL@");
     private readonly byte[] iv = new byte[16];
 
     public string Encrypt(string plainText)
@@ -13,11 +13,16 @@ public class EncryptionService : IEncryptionService
 
         var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
         using var ms = new System.IO.MemoryStream();
-        using var cs = new System.Security.Cryptography.CryptoStream(ms, encryptor, System.Security.Cryptography.CryptoStreamMode.Write);
-        using var sw = new System.IO.StreamWriter(cs);
-        sw.Write(plainText);
+        using (var cs = new System.Security.Cryptography.CryptoStream(ms, encryptor, System.Security.Cryptography.CryptoStreamMode.Write))
+        using (var sw = new System.IO.StreamWriter(cs))
+        {
+            sw.Write(plainText);
+            sw.Flush();
+            cs.FlushFinalBlock();
+        }
         return Convert.ToBase64String(ms.ToArray());
     }
+
 
     public string Decrypt(string cipherText)
     {

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package Discount.API.Services;
+
+message CouponDto {
+   int32 Id = 1;
+   string ProductName = 2;
+   string Description = 3;
+   string Amount = 4;
+}
+message CouponRequestDto {
+   string ProductName = 1;
+}
+message DeleteResultDto {
+}
+service DiscountService {
+   rpc CreateDiscount (CouponDto) returns (CouponDto);
+   rpc DeleteDiscount (CouponRequestDto) returns (DeleteResultDto);
+   rpc GetDiscount (CouponRequestDto) returns (CouponDto);
+   rpc UpdateDiscount (CouponDto) returns (CouponDto);
+}
