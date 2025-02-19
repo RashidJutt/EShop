@@ -26,3 +26,13 @@
 /Services/Discount/Discount.Core/obj/*
 /Services/Discount/Discount.Infrastructure/bin/*
 /Services/Discount/Discount.Infrastructure/obj/*
+/Services/Ordering/Ordering.API/bin/Debug/net8.0
+/Services/Ordering/Ordering.API/obj
+/Services/Ordering/Ordering.Application/obj
+/Services/Ordering/Ordering.Core/obj
+/Services/Ordering/Ordering.Infrastructure/obj
+/BuildingBlocks/EventBus/bin
+/BuildingBlocks/EventBus/obj
+/Services/Ordering/Ordering.Application/bin
+/Services/Ordering/Ordering.Core/bin
+/Services/Ordering/Ordering.Infrastructure/bin/Debug/net8.0
