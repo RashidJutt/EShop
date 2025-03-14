@@ -134,9 +134,9 @@ namespace Catalog.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ProductDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand productCommand)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto product)
         {
-            var result = await _mediator.Send(productCommand);
+            var result = await _mediator.Send(new CreateProductCommand(product));
             return CreatedAtRoute("GetProductById", new { id = result.Id }, result);
         }
 

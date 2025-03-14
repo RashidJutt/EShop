@@ -1,5 +1,6 @@
 ﻿using Catalog.Core.Entities;
 using MongoDB.Driver;
+using System.Reflection;
 using System.Text.Json;
 
 
@@ -33,14 +34,15 @@ public static class ProductContextSeed
 
     private static async Task<List<Product>> ReadProductsFromFileAsync(string filePath)
     {
-        if (!File.Exists(filePath))
+        var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, filePath);
+        if (!File.Exists(path: path))
         {
-            throw new FileNotFoundException($"The products seed file could not be found at: {filePath}");
+            throw new FileNotFoundException($"The products seed file could not be found at: {path}");
         }
 
         try
         {
-            var productsData = await File.ReadAllTextAsync(filePath);
+            var productsData = await File.ReadAllTextAsync(path);
             return JsonSerializer.Deserialize<List<Product>>(productsData) ?? new List<Product>();
         }
         catch (Exception ex)

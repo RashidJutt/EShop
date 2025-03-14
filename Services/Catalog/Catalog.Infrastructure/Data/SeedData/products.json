@@ -304,22 +304,6 @@
     }
   },
   {
-    "Id" : "992d2149e773f2a3990b47fa",
-    "Name": "Yonex VCORE Pro 100 2019 Tennis Racquet (280gm, Unstrung)",
-    "Description": "For offensive players looking to win with game-changing spin and power.",
-    "Price": 13299,
-    "ImageFile": "images/products/yonex-racket-3.png",
-    "Summary": "Yonex VCORE Pro 100 A Tennis Racquet (290gm, Strung)",
-    "Types": {
-      "Id": "63ca5d6d958e43ee1cd375fe",
-      "Name": "Rackets"
-    },
-    "Brands": {
-      "Id":"63ca5e655ec1fdc49bd9327d",
-      "Name": "Yonex"
-    }
-  },
-  {
     "Id" : "993d2149e773f2a3990b47fa",
     "Name": "Babolat Boost D Tennis Racquet (260gm, Strung)",
     "Description": "Babolat Boost D Tennis Racquet (260gm, Strung)",

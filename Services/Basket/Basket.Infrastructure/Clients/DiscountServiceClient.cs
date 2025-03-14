@@ -28,7 +28,7 @@ public class DiscountServiceClient : IDiscountServiceClient
         return new Discount.Application.Dtos.CouponDto
         {
             Id = couponResponse.Id,
-            Amount = decimal.Parse(couponResponse.Amount),
+            Amount = decimal.TryParse(couponResponse.Amount, out var amount) ? amount : 0,
             ProductName = couponResponse.ProductName,
             Description = couponResponse.Description,
         };

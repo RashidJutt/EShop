@@ -35,4 +35,6 @@
 /BuildingBlocks/EventBus/obj
 /Services/Ordering/Ordering.Application/bin
 /Services/Ordering/Ordering.Core/bin
-/Services/Ordering/Ordering.Infrastructure/bin/Debug/net8.0
+/Services/Ordering/Ordering.Infrastructure/bin
+/BuildingBlocks/Logging/bin/Debug/net8.0
+/BuildingBlocks/Logging/obj

@@ -29,7 +29,7 @@ public class GetCouponQueryHandler : IRequestHandler<GetCouponQuery, CouponDto?>
         if (couponEntity == null)
         {
             _logger.LogInformation("Coupon not found for product {ProductName}.", command.ProductName);
-            return null;
+            return new CouponDto();
         }
 
         _logger.LogInformation("Coupon found for product {ProductName}.", command.ProductName);

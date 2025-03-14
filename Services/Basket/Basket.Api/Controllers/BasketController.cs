@@ -65,18 +65,20 @@ namespace Basket.API.Controllers
         /// </summary>
         /// <param name="username">The username of the shopping cart owner to delete.</param>
         /// <returns>Result of the delete operation.</returns>
-        [HttpDelete("{username}")]
+        [HttpPost("checkout")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> DeleteBasket(string username)
+        public async Task<IActionResult> Checkout(BasketCheckoutDto basketCheckout)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            var query = new GetShoppingCartQuery(basketCheckout.UserName);
+            var shopingCart = await _mediator.Send(query);
+            if (shopingCart == null)
             {
-                return BadRequest("Username cannot be null or empty.");
+                return BadRequest();
             }
-
-            await _mediator.Send(new DeleteShoppingCartCommand(username));
-            return Ok(new { Message = $"Basket of user {username} deleted successfully." });
+            basketCheckout.TotalPrice = shopingCart.TotalPrice;
+            await _mediator.Send(new BasketCheckoutCommand(basketCheckout));
+            return Accepted();
         }
     }
 }

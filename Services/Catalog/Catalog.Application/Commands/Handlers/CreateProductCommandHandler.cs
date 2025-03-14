@@ -24,7 +24,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     {
         _logger.LogInformation("Creating a new product with details: {@ProductRequest}", request);
 
-        var productEntity = _mapper.Map<Product>(request);
+        var productEntity = _mapper.Map<Product>(request.Product);
         var createdProduct = await _productRepository.CreateAsync(productEntity, cancellationToken);
                
         var productDto = _mapper.Map<ProductDto>(createdProduct);

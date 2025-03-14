@@ -1,5 +1,6 @@
 ﻿using Catalog.Core.Entities;
 using MongoDB.Driver;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Catalog.Infrastructure.Data;
@@ -8,7 +9,7 @@ public static class BrandContextSeed
 {
     // For IIS. 
     //private const string BrandsSeedFilePath = "../Catalog.Infrastructure/Data/SeedData/brands.json";
-    
+
     // For Container. 
     private const string BrandsSeedFilePath = "Data/SeedData/brands.json";
 
@@ -33,14 +34,15 @@ public static class BrandContextSeed
 
     private static async Task<List<ProductBrand>> ReadBrandsFromFileAsync(string filePath)
     {
-        if (!File.Exists(filePath))
+        var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, filePath);
+        if (!File.Exists(path))
         {
-            throw new FileNotFoundException($"The brands seed file could not be found at: {filePath}");
+            throw new FileNotFoundException($"The brands seed file could not be found at: {path}");
         }
 
         try
         {
-            var brandsData = await File.ReadAllTextAsync(filePath);
+            var brandsData = await File.ReadAllTextAsync(path);
             return JsonSerializer.Deserialize<List<ProductBrand>>(brandsData) ?? new List<ProductBrand>();
         }
         catch (Exception ex)

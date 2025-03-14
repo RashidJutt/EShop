@@ -2,12 +2,14 @@ using Discount.API.Services;
 using Discount.Infrastructure.Extentions;
 using ProtoBuf.Grpc.Server;
 using Discount.Application.Extentions;
+using Serilog;
+using Logging;
 internal class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+        builder.Host.UseSerilog(LoggingExtentions.ConfigureSirilog);
         builder.Services.AddCodeFirstGrpc();
         builder.Services.AddSingleton<IDiscountService, DiscountService>();
 

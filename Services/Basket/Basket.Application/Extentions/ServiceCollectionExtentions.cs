@@ -1,4 +1,5 @@
 ﻿using Basket.Application.Profiles;
+using Basket.Application.Validators;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -12,5 +13,15 @@ public static class ServiceCollectionExtentions
         {
             cfg.ShouldMapProperty = p => p.GetMethod!.IsPublic || p.GetMethod.IsAssembly;
         }, Assembly.GetAssembly(typeof(BasketMappingProfile)));
+
+        var validatorType = typeof(IShoppingCartValidator);
+        var validators = Assembly.GetAssembly(validatorType)!
+                                 .GetTypes()
+                                 .Where(t => validatorType.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+
+        foreach (var validator in validators)
+        {
+            services.AddScoped(validatorType, validator);
+        }
     }
 }

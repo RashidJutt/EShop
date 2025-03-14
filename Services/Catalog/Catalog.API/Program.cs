@@ -6,10 +6,13 @@ using Catalog.Application.Profiles;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
+using Logging;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog(LoggingExtentions.ConfigureSirilog);
 builder.Services.AddControllers();
 
 // Add API Versioning

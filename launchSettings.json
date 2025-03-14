@@ -2,6 +2,7 @@
   "profiles": {
     "Docker Compose": {
       "commandName": "DockerCompose",
+      "workingDirectory": "/app",
       "commandVersion": "1.0",
       "serviceActions": {
         "catalog.api": "StartDebugging"

@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Catalog.Application.Commands;
 
-public record CreateProductCommand(ProductDto Product):IRequest<ProductDto>;
+public record CreateProductCommand(CreateProductDto Product):IRequest<ProductDto>;

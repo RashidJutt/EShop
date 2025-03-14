@@ -1,5 +1,6 @@
 ﻿using Catalog.Core.Entities;
 using MongoDB.Driver;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Catalog.Infrastructure.Data
@@ -33,14 +34,15 @@ namespace Catalog.Infrastructure.Data
 
         private static async Task<List<ProductType>> ReadProductTypesFromFileAsync(string filePath)
         {
-            if (!File.Exists(filePath))
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, filePath);
+            if (!File.Exists(path))
             {
-                throw new FileNotFoundException($"The product types seed file could not be found at: {filePath}");
+                throw new FileNotFoundException($"The product types seed file could not be found at: {path}");
             }
 
             try
             {
-                var typesData = await File.ReadAllTextAsync(filePath);
+                var typesData = await File.ReadAllTextAsync(path);
                 return JsonSerializer.Deserialize<List<ProductType>>(typesData) ?? new List<ProductType>();
             }
             catch (Exception ex)

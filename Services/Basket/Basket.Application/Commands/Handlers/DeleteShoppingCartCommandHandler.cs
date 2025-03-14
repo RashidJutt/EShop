@@ -11,8 +11,8 @@ public class DeleteShoppingCartCommandHandler : IRequestHandler<DeleteShoppingCa
 
     public DeleteShoppingCartCommandHandler(IBasketRepository basketRepository, ILogger<DeleteShoppingCartCommandHandler> logger)
     {
-        _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _basketRepository = basketRepository;
+        _logger = logger;
     }
     public async Task Handle(DeleteShoppingCartCommand request, CancellationToken cancellationToken)
     {
